@@ -5,7 +5,7 @@ import { IoNotifications } from "react-icons/io5";
 import { FaUser } from "react-icons/fa";
 import { Link } from "react-router-dom";
 import { BiLogOut } from "react-icons/bi";
-import {useMutation,useQueryClient} from "@tanstack/react-query";
+import {useMutation,useQueryClient,useQuery} from "@tanstack/react-query";
 
 const Sidebar = () => {
 	const queryClient = useQueryClient();
@@ -32,7 +32,7 @@ const Sidebar = () => {
 				},
 	})
 	
-	const {data:uthUser} = useQuery({queryKey:["authUser"]});
+	const {data:authUser} = useQuery({queryKey:["authUser"]});
 
 	return (
 		<div className='md:flex-[2_2_0] w-18 max-w-52'>
