@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import {useQuery, useMutation, useQueryClient} from "@tanstack/react-query";
+import { useQuery, useMutation, useQueryClient } from "@tanstack/react-query";
 import { toast } from "react-hot-toast";
 
 import LoadingSpinner from "../../components/common/LoadingSpinner";
@@ -10,43 +10,42 @@ import { FaHeart } from "react-icons/fa6";
 
 const NotificationPage = () => {
 	const queryClient = useQueryClient();
-	const {data:notifications,isLoading} = useQuery({
+	const { data: notifications, isLoading } = useQuery({
 		queryKey: ["notifications"],
 		queryFn: async () => {
-			try{
+			try {
 				const res = await fetch("/api/notifications");
 				const data = await res.json();
-				if(!res.ok) throw new Error(data.error || "something went wrong");
+				if (!res.ok) throw new Error(data.error || "Something went wrong");
 				return data;
-			}catch (error){
+			} catch (error) {
 				throw new Error(error);
 			}
 		},
-		
 	});
 
-	const{mutate:deleteNotifications} = useMutation({
-		mutationFn: async () =>{
-			try{
+	const { mutate: deleteNotifications } = useMutation({
+		mutationFn: async () => {
+			try {
 				const res = await fetch("/api/notifications", {
 					method: "DELETE",
-					});
-					const data = await res.json();
-					if(!res.ok) throw new Error(data.error || "something went wrong");
-					return data;
-					}catch (error){
-						throw new Error(error);
-						}
-						},
-						onSuccess: () => {
-							toast.success("Notifications deleted successfully");
-							queryClient.invalidateQueries({queryKey:["notifications"]});
-						},
-						onError: (error) =>{
-							toast.error(error.message);
-						}
-					});
+				});
+				const data = await res.json();
 
+				if (!res.ok) throw new Error(data.error || "Something went wrong");
+				return data;
+			} catch (error) {
+				throw new Error(error);
+			}
+		},
+		onSuccess: () => {
+			toast.success("Notifications deleted successfully");
+			queryClient.invalidateQueries({ queryKey: ["notifications"] });
+		},
+		onError: (error) => {
+			toast.error(error.message);
+		},
+	});
 
 	return (
 		<>

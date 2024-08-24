@@ -1,3 +1,4 @@
+
 import { Link } from "react-router-dom";
 import { useQuery } from "@tanstack/react-query";
 
@@ -5,26 +6,27 @@ import useFollow from "../../hooks/useFollow";
 
 import RightPanelSkeleton from "../skeletons/RightPanelSkeleton";
 import LoadingSpinner from "./LoadingSpinner";
+
 const RightPanel = () => {
-	const {data:suggesteddUsers,isLoading} = useQuery({
-		queryKey: ["suggestedUsers"],	
+	const { data: suggestedUsers, isLoading } = useQuery({
+		queryKey: ["suggestedUsers"],
 		queryFn: async () => {
-			try{
+			try {
 				const res = await fetch("/api/users/suggested");
 				const data = await res.json();
-				if(!res.ok){
-					throw new Error(data.error || "something went wrong");
+				if (!res.ok) {
+					throw new Error(data.error || "Something went wrong!");
 				}
 				return data;
-			}catch(error){
+			} catch (error) {
 				throw new Error(error.message);
 			}
 		},
 	});
 
-	const { follow, isPending } = useFollow()
+	const { follow, isPending } = useFollow();
 
-	if(suggesteddUsers?.length === 0) return <div className="md:w-64 w-0"></div>;
+	if (suggestedUsers?.length === 0) return <div className='md:w-64 w-0'></div>;
 
 	return (
 		<div className='hidden lg:block my-4 mx-2'>
@@ -41,7 +43,7 @@ const RightPanel = () => {
 						</>
 					)}
 					{!isLoading &&
-						suggesteddUsers?.map((user) => (
+						suggestedUsers?.map((user) => (
 							<Link
 								to={`/profile/${user.username}`}
 								className='flex items-center justify-between gap-4'
@@ -68,9 +70,7 @@ const RightPanel = () => {
 											follow(user._id);
 										}}
 									>
-										{
-											isPending ? <LoadingSpinner size="sm"/> :"Follow"
-										}
+										{isPending ? <LoadingSpinner size='sm' /> : "Follow"}
 									</button>
 								</div>
 							</Link>

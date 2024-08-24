@@ -1,3 +1,4 @@
+
 const RightPanelSkeleton = () => {
 	return (
 		<div className='flex flex-col gap-2 w-52 my-2'>
